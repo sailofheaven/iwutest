@@ -24,7 +24,7 @@ export class InputCountry extends React.PureComponent<InputCountryProps, InputCo
     }
 
     _flagField: string = ''
-    countryList:React.RefObject<HTMLDivElement> 
+    countryList: React.RefObject<HTMLDivElement>
 
     state: InputCountryState = {
         isEdit: false,
@@ -75,18 +75,19 @@ export class InputCountry extends React.PureComponent<InputCountryProps, InputCo
     }
 
     onKeyUp(evt: React.KeyboardEvent<HTMLInputElement>) {
-        const { index, countries, isEdit } = this.state
+        const { index, isEdit } = this.state
+        let filterCountries = [];
         if (!isEdit) return;
         evt.preventDefault();
-
+        if (-1 !== [13, 38, 40].indexOf(evt.keyCode)) { filterCountries = this.getFilterCoiuntries() }
         if (38 === evt.keyCode) {
-            this.setState({ index: 0 === index ? countries.length - 1 : index - 1 })
+            this.setState({ index: 0 === index ? filterCountries.length - 1 : index - 1 })
 
         } else if (40 === evt.keyCode) {
-            this.setState({ index: (index + 1) % countries.length })
+            this.setState({ index: (index + 1) % filterCountries.length })
 
         } else if (13 === evt.keyCode) {
-            this.onSelect(evt, this.getFilterCoiuntries()[index].name);
+            this.onSelect(evt, filterCountries[index].name);
         }
     }
 
